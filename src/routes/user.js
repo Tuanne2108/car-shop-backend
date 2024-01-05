@@ -2,6 +2,8 @@ const express = require("express");
 const UserController = require("../controllers/UserController");
 const router = express.Router();
 
-router.use('/', UserController.createUser)
+router.post('/log-in', UserController.logInUser)
+router.post('/log-up', UserController.createUser)
+router.put('/update-user/:id', UserController.updateUser)
 
 module.exports = router;
