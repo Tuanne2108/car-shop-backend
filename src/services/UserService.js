@@ -4,7 +4,7 @@ const { generalAccessToken, generalRefreshToken } = require("./JwtService");
 
 let createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const { name, email, password, confirmedPassword, phone } = newUser;
+        const { name, email, password, phone } = newUser;
         try {
             const checkUser = await User.findOne({
                 email: email,
@@ -81,9 +81,8 @@ let updateUser = (id, data) => {
     return new Promise(async (resolve, reject) => {
         try {
             const checkUser = await User.findOne({
-                id: id,
+                _id: id,
             });
-            console.log("checkUser", checkUser);
             if (checkUser === null)
                 resolve({
                     status: "OK",
@@ -95,11 +94,72 @@ let updateUser = (id, data) => {
             resolve({
                 status: "OK",
                 message: "SUCCESS",
-                data: updatedUser
+                data: updatedUser,
             });
         } catch (error) {
             reject(error);
         }
     });
 };
-module.exports = { createUser, logInUser, updateUser };
+let deleteUser = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkUser = await User.findOne({
+                _id: id,
+            });
+            if (checkUser === null)
+                resolve({
+                    status: "OK",
+                    message: "The user is not defined",
+                });
+            await User.findByIdAndDelete(id);
+            resolve({
+                status: "OK",
+                message: "Delete Successfully",
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let getAllUser = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const allUser = await User.find();
+            resolve({
+                status: "OK",
+                message: "Successfully",
+                data: allUser,
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+let getUserDetails = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const userDetails = await User.findOne({ _id: id });
+            if (userDetails === null)
+                resolve({
+                    status: "OK",
+                    message: "The user is not defined",
+                });
+            resolve({
+                status: "OK",
+                message: "Successfully",
+                data: userDetails,
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+module.exports = {
+    createUser,
+    logInUser,
+    updateUser,
+    deleteUser,
+    getAllUser,
+    getUserDetails,
+};

@@ -81,6 +81,40 @@ class UserController {
             });
         }
     }
+    async deleteUser(req, res){
+        try {
+            const userId = req.params.id
+            const token = req.headers
+            const response = await userService.deleteUser(userId)
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(404).json({
+                message: error,
+            });
+        }
+    }
+    async getAllUser(req, res){
+        try {
+            const response = await userService.getAllUser()
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(404).json({
+                message: error,
+            });
+        }
+    }
+    async getUserDetails(req, res){
+        try {
+            const userId = req.params.id
+            const response = await userService.getUserDetails(userId)
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(404).json({
+                message: error,
+            });
+        }
+    }
+    
 }
 
 module.exports = new UserController();
