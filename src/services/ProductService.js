@@ -80,14 +80,51 @@ let deleteProduct = (id) => {
         }
     });
 };
-let getAllProduct = () => {
+let getAllProduct = (limit, page, sort, filter) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const allProduct = await Product.find();
+            const totalProduct = await Product.countDocuments();
+            if (filter) {
+                const type = filter[0];
+                const string = filter[1];
+                const filteredProduct = await Product.find({
+                    [type]: { '$regex': string },
+                });
+                resolve({
+                    status: "OK",
+                    message: "Successfully",
+                    data: filteredProduct,
+                    total: totalProduct,
+                    pageCurrent: Number(page + 1),
+                    totalPage: Math.ceil(totalProduct / limit),
+                });
+            }
+            if (sort) {
+                const sortedObjects = {};
+                sortedObjects[sort[1]] = sort[0];
+                const sortedProduct = await Product.find()
+                    .limit(limit)
+                    .skip(page * limit)
+                    .sort(sortedObjects);
+                resolve({
+                    status: "OK",
+                    message: "Successfully",
+                    data: sortedProduct,
+                    total: totalProduct,
+                    pageCurrent: Number(page + 1),
+                    totalPage: Math.ceil(totalProduct / limit),
+                });
+            }
+            const allProduct = await Product.find()
+                .limit(limit)
+                .skip(page * limit);
             resolve({
                 status: "OK",
                 message: "Successfully",
                 data: allProduct,
+                total: totalProduct,
+                pageCurrent: Number(page + 1),
+                totalPage: Math.ceil(totalProduct / limit),
             });
         } catch (error) {
             reject(error);
