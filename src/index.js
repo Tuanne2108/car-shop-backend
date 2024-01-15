@@ -8,6 +8,9 @@ const app = express();
 const viewEngine = require("./config/viewEngine");
 let port = 3001;
 dotenv.config();
+const cors = require('cors')
+
+app.use(cors())
 app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
