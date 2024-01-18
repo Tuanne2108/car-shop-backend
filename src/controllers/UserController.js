@@ -4,11 +4,15 @@ const userService = require("../services/UserService");
 class UserController {
     async createUser(req, res) {
         try {
-            const { name, email, password, confirmedPassword, phone } =
-                req.body;
+            const { name, email, password, confirmPassword } = req.body;
             let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             let isCheckedMail = mailformat.test(email);
-            if (!name || !email || !password || !confirmedPassword || !phone) {
+            if (
+                !name ||
+                !email ||
+                !password ||
+                !confirmPassword
+            ) {
                 return res.status(200).json({
                     status: "ERR",
                     message: "The input is required",
@@ -18,7 +22,7 @@ class UserController {
                     status: "ERR",
                     message: "The email is invalid",
                 });
-            } else if (password !== confirmedPassword) {
+            } else if (password !== confirmPassword) {
                 return res.status(200).json({
                     status: "ERR",
                     message: "The confirmed password should equal to password",
@@ -36,11 +40,10 @@ class UserController {
 
     async logInUser(req, res) {
         try {
-            const { name, email, password, confirmedPassword, phone } =
-                req.body;
+            const { email, password } = req.body;
             let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             let isCheckedMail = mailformat.test(email);
-            if (!name || !email || !password || !confirmedPassword || !phone) {
+            if (!email || !password) {
                 return res.status(200).json({
                     status: "ERR",
                     message: "The input is required",
@@ -49,11 +52,6 @@ class UserController {
                 return res.status(200).json({
                     status: "ERR",
                     message: "The email is invalid",
-                });
-            } else if (password !== confirmedPassword) {
-                return res.status(200).json({
-                    status: "ERR",
-                    message: "The confirmed password should equal to password",
                 });
             }
             console.log("isCheckedMail", isCheckedMail);

@@ -4,14 +4,14 @@ const { generalAccessToken, generalRefreshToken } = require("./JwtService");
 
 let createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const { name, email, password, phone } = newUser;
+        const { name, email, password } = newUser;
         try {
             const checkUser = await User.findOne({
                 email: email,
             });
             if (checkUser !== null)
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "The email is already exist",
                 });
             const hash = bcrypt.hashSync(password, 10);
@@ -19,7 +19,6 @@ let createUser = (newUser) => {
                 name,
                 email,
                 password: hash,
-                phone,
             });
             if (createUser) {
                 resolve({
@@ -35,15 +34,14 @@ let createUser = (newUser) => {
 };
 let logInUser = (userLoggedIn) => {
     return new Promise(async (resolve, reject) => {
-        const { name, email, password, confirmedPassword, phone } =
-            userLoggedIn;
+        const { email, password } = userLoggedIn;
         try {
             const checkUser = await User.findOne({
                 email: email,
             });
             if (checkUser === null)
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "The user is not defined",
                 });
             const comparePassword = bcrypt.compareSync(
@@ -52,7 +50,7 @@ let logInUser = (userLoggedIn) => {
             );
             if (!comparePassword) {
                 resolve({
-                    status: "FAILURE",
+                    status: "ERR",
                     message: "Password or username is incorrect!",
                 });
             }
