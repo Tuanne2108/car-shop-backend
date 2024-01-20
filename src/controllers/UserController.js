@@ -7,25 +7,15 @@ class UserController {
             const { name, email, password, confirmPassword } = req.body;
             let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             let isCheckedMail = mailformat.test(email);
-            if (
-                !name ||
-                !email ||
-                !password ||
-                !confirmPassword
-            ) {
+            if (!isCheckedMail) {
                 return res.status(200).json({
                     status: "ERR",
-                    message: "The input is required",
-                });
-            } else if (!isCheckedMail) {
-                return res.status(200).json({
-                    status: "ERR",
-                    message: "The email is invalid",
+                    message: "The email is invalid!",
                 });
             } else if (password !== confirmPassword) {
                 return res.status(200).json({
                     status: "ERR",
-                    message: "The confirmed password should equal to password",
+                    message: "Passwords do not match!",
                 });
             }
             console.log("isCheckedMail", isCheckedMail);
