@@ -9,10 +9,12 @@ const viewEngine = require("./config/viewEngine");
 let port = 3001;
 dotenv.config();
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 app.use(cors())
 app.use(morgan("combined"));
 app.use(bodyParser.json());
+app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
 viewEngine(app);
 routes(app);

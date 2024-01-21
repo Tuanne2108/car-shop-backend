@@ -46,7 +46,13 @@ class UserController {
             }
             console.log("isCheckedMail", isCheckedMail);
             const response = await userService.logInUser(req.body);
-            return res.status(200).json(response);
+            const { refresh_token, ...newResponse } = response;
+            console.log("refresh token", refresh_token);
+            res.cookie("refresh_token", refresh_token, {
+                HttpOnly: true,
+                Secure: true,
+            });
+            return res.status(200).json(newResponse);
         } catch (error) {
             return res.status(404).json({
                 message: error,
@@ -107,7 +113,7 @@ class UserController {
     }
     async refreshToken(req, res) {
         try {
-            const token = req.headers.token.split(" ")[1];
+            const token = req.cookies.refresh_token;
             if (!token) {
                 return res.status(404).json({
                     message: "The token is required",
@@ -116,6 +122,7 @@ class UserController {
             }
             const response = await refreshTokenJwtService(token);
             return res.status(200).json(response);
+            return;
         } catch (error) {
             return res.status(404).json({
                 message: error,
