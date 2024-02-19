@@ -128,7 +128,6 @@ class UserController {
         }
     }
     async refreshToken(req, res) {
-
         console.log('refreshtoken',  req.cookies.refresh_token)
         try {
             const token = req.cookies.refresh_token;
@@ -140,7 +139,6 @@ class UserController {
             }
             const response = await refreshTokenJwtService(token);
             return res.status(200).json(response);
-            return;
         } catch (error) {
             return res.status(404).json({
                 message: error,

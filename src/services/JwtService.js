@@ -8,7 +8,7 @@ const generalAccessToken = async (payload) => {
         },
         process.env.ACCESS_TOKEN,
         {
-            expiresIn: "30s",
+            expiresIn: "1h",
         }
     );
     return access_token;
@@ -35,6 +35,7 @@ const refreshTokenJwtService = (token) => {
                     resolve({ status: "error", message: "Invalid token" });
                 }
                 console.log("user", user);
+
                 const access_token = await generalAccessToken({
                     id: user?.id,
                     isAdmin: user?.isAdmin,
