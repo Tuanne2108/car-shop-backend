@@ -10,7 +10,7 @@ const authenMiddleware = (req, res, next) => {
                 .status(404)
                 .json({ message: "Authentication!", status: "ERROR" });
         }
-        const { payload } = user;
+        // const { payload } = user;
         if (user?.isAdmin) {
             next();
         } else {
@@ -30,7 +30,7 @@ const authenUserMiddleware = (req, res, next) => {
                 .status(404)
                 .json({ message: "Authentication!", status: "ERROR" });
         }
-        const { payload } = user;
+        // const { payload } = user;
         if (user?.isAdmin || user?.id === userId) {
             next();
         } else {
