@@ -32,9 +32,8 @@ const refreshTokenJwtService = (token) => {
         try {
             jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
                 if (err) {
-                    resolve({ status: "error", message: "Invalid token" });
+                    resolve({ status: "ERR", message: "Invalid token" });
                 }
-                console.log("user", user);
 
                 const access_token = await generalAccessToken({
                     id: user?.id,

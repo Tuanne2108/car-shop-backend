@@ -9,12 +9,12 @@ const router = express.Router();
 router.post("/log-in", UserController.logInUser);
 router.post("/log-up", UserController.createUser);
 router.post("/logout", UserController.logOutUser);
-router.put("/update-user/:id", authenUserMiddleware, UserController.updateUser);
+router.put("/update-user/:id", authenMiddleware, UserController.updateUser);
 router.delete("/delete-user/:id", authenMiddleware, UserController.deleteUser);
+router.post("/delete-many-user", authenMiddleware, UserController.deleteManyUser);
 router.get("/get-all-user", UserController.getAllUser);
 router.get(
     "/get-user-details/:id",
-    authenUserMiddleware,
     UserController.getUserDetails
 );
 router.post("/refresh-token", UserController.refreshToken);

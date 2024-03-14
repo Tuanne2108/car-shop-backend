@@ -73,7 +73,7 @@ let logInUser = (userLoggedIn) => {
                     status: "OK",
                     message: "SUCCESS",
                     access_token,
-                    refresh_token
+                    refresh_token,
                 });
             }
         } catch (error) {
@@ -126,6 +126,19 @@ let deleteUser = (id) => {
         }
     });
 };
+let deleteManyUser = (ids) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await User.deleteMany({ _id: ids });
+            resolve({
+                status: "OK",
+                message: "Delete Successfully",
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 let getAllUser = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -166,4 +179,5 @@ module.exports = {
     deleteUser,
     getAllUser,
     getUserDetails,
+    deleteManyUser,
 };

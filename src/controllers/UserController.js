@@ -106,6 +106,23 @@ class UserController {
             });
         }
     }
+    async deleteManyUser(req, res) {
+        try {
+            const userIds = req.body.ids;
+            if(!userIds){
+                return res.status(404).json({
+                    message: "The ids is required",
+                    status: "ERR",
+                });
+            }
+            const response = await userService.deleteManyUser(userIds);
+            return res.status(200).json(response);
+        } catch (error) {
+            return res.status(404).json({
+                message: error,
+            });
+        }
+    }
     async getAllUser(req, res) {
         try {
             const response = await userService.getAllUser();
@@ -128,13 +145,12 @@ class UserController {
         }
     }
     async refreshToken(req, res) {
-        console.log('refreshtoken',  req.cookies.refresh_token)
         try {
             const token = req.cookies.refresh_token;
             if (!token) {
                 return res.status(404).json({
                     message: "The token is required",
-                    status: "error",
+                    status: "ERR",
                 });
             }
             const response = await refreshTokenJwtService(token);
