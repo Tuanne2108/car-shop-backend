@@ -67,6 +67,23 @@ class ProductController {
             });
         }
     }
+    async deleteManyProduct(req, res) {
+        try {
+            const productIds = req.body.ids;
+            if(!productIds){
+                return res.status(404).json({
+                    message: "The ids is required",
+                    status: "ERR",
+                });
+            }
+            const response = await productService.deleteManyProduct(productIds);
+            return res.status(200).json(response);
+        } catch (error) {
+            return res.status(404).json({
+                message: error,
+            });
+        }
+    }
     async getAllProduct(req, res) {
         try {
             const { limit, page, sort, filter } = req.query;
